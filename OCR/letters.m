@@ -30,6 +30,4 @@ end
 
 function img_out=clip(img_in)
 [f c]=find(img_in);
-disp(min(c));
 img_out=img_in(:,min(c):max(c));%Crops image
-imshow(img_out);pause(1);
