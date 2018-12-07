@@ -8,9 +8,10 @@ warning off %#ok<WNOFF>
 % Clear all
 clc, close all, clear all
 % Read image
-imagen=imread('TEST_4.jpg');
+imagen=imread('Braille_Test.jpg');
+%imagen=imrotate(imagen, -90);
 % Show image
-imshow(imagen);
+%imshow(imagen);
 title('INPUT IMAGE WITH NOISE')
 % Convert to gray scale
 if size(imagen,3)==3 %RGB image
@@ -18,12 +19,14 @@ if size(imagen,3)==3 %RGB image
 end
 % Convert to BW
 threshold = graythresh(imagen);
-imagen =~im2bw(imagen,threshold);
+imagen =~imbinarize(imagen,threshold);
 % Remove all object containing fewer than 30 pixels
-imagen = bwareaopen(imagen,30);
+%imshow(imagen);pause(0.5);
+title('BINARIZED INPUT IMAGE')
+imagen = bwareaopen(imagen,20);
 %Storage matrix word from image
 word=[ ];
-re=imagen;
+re_line=imagen;
 %Opens text.txt as file for write
 fid = fopen('text.txt', 'wt');
 % Load templates
@@ -33,33 +36,38 @@ global templates
 num_letras=size(templates,2);
 while 1
     %Fcn 'lines' separate lines in text
-    [fl re]=lines(re);
+    [fl re_line]=lines(re_line);
     imgn=fl;
+    re_letter=imgn;
     %Uncomment line below to see lines one by one
-    %imshow(fl);pause(0.5)    
+    imshow(fl);pause(0.5)  
     %-----------------------------------------------------------------     
     % Label and count connected components
-    [L Ne] = bwlabel(imgn);    
-    for n=1:Ne
-        [r,c] = find(L==n);
-        % Extract letter
-        n1=imgn(min(r):max(r),min(c):max(c));  
+    while 1
+%         [r,c] = find(L==n);
+%         % Extract letter
+%         n1=imgn(min(r):max(r),min(c):max(c));
+        [fc re_letter]=letters(re_letter);
+        %imshow(fc);pause(2);
         % Resize letter (same size of template)
-        img_r=imresize(n1,[42 24]);
+        img_r=imresize(fc,[42 24]);
         %Uncomment line below to see letters one by one
-         %imshow(img_r);pause(0.5)
+        %imshow(img_r);pause(0.5)
         %-------------------------------------------------------------------
         % Call fcn to convert image to text
         letter=read_letter(img_r,num_letras);
         % Letter concatenation
         word=[word letter];
+        if isempty(re_letter)  %See variable 're_letter' in Fcn 'letters'
+            break
+        end
     end
     %fprintf(fid,'%s\n',lower(word));%Write 'word' in text file (lower)
     fprintf(fid,'%s\n',word);%Write 'word' in text file (upper)
     % Clear 'word' variable
     word=[ ];
     %*When the sentences finish, breaks the loop
-    if isempty(re)  %See variable 're' in Fcn 'lines'
+    if isempty(re_line)  %See variable 're' in Fcn 'lines'
         break
     end    
 end

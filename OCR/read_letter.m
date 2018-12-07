@@ -8,6 +8,7 @@ function letter=read_letter(imagn,num_letras)
 global templates
 comp=[ ];
 for n=1:num_letras
+    %imshow(templates{1,n});pause(1);
     sem=corr2(templates{1,n},imagn);
     comp=[comp sem];
 end
