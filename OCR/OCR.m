@@ -8,7 +8,7 @@ warning off %#ok<WNOFF>
 % Clear all
 clc, close all, clear all
 % Read image
-imagen=imread('Braille_Test.jpg');
+imagen=imread('faith.jpg');
 %imagen=imrotate(imagen, -90);
 % Show image
 %imshow(imagen);
@@ -16,14 +16,17 @@ title('INPUT IMAGE WITH NOISE')
 % Convert to gray scale
 if size(imagen,3)==3 %RGB image
     imagen=rgb2gray(imagen);
+    % Convert to BW
+    threshold = graythresh(imagen);
+    imagen = imbinarize(imagen,threshold);
+    imshow(imagen);
 end
-% Convert to BW
-threshold = graythresh(imagen);
-imagen =~imbinarize(imagen,threshold);
 % Remove all object containing fewer than 30 pixels
 %imshow(imagen);pause(0.5);
 title('BINARIZED INPUT IMAGE')
+imagen = imcomplement(imagen);
 imagen = bwareaopen(imagen,20);
+imshow(imagen);pause(1);
 %Storage matrix word from image
 word=[ ];
 re_line=imagen;
@@ -52,7 +55,7 @@ while 1
         % Resize letter (same size of template)
         img_r=imresize(fc,[42 24]);
         %Uncomment line below to see letters one by one
-        %imshow(img_r);pause(0.5)
+        imshow(img_r);pause(0.5)
         %-------------------------------------------------------------------
         % Call fcn to convert image to text
         letter=read_letter(img_r,num_letras);

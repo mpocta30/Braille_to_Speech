@@ -33,6 +33,33 @@ Z=imcomplement(bwareaopen(imresize(imread('dataset_1\z.jpg'), [42 24]), 30));
 % seven=imread('dataset_1\7.jpg');eight=imread('dataset_1\8.jpg');
 % nine=imread('dataset_1\9.jpg'); zero=imread('dataset_1\0.jpg');
 
+A=imresize(clip(A), [42 24]);
+B=imresize(clip(B), [42 24]);
+C=imresize(clip(C), [42 24]);
+D=imresize(clip(D), [42 24]);
+E=imresize(clip(E), [42 24]);
+F=imresize(clip(F), [42 24]);
+G=imresize(clip(G), [42 24]);
+H=imresize(clip(H), [42 24]);
+I=imresize(clip(I), [42 24]);
+J=imresize(clip(J), [42 24]);
+K=imresize(clip(K), [42 24]);
+L=imresize(clip(L), [42 24]);
+M=imresize(clip(M), [42 24]);
+N=imresize(clip(N), [42 24]);
+O=imresize(clip(O), [42 24]);
+P=imresize(clip(P), [42 24]);
+Q=imresize(clip(Q), [42 24]);
+R=imresize(clip(R), [42 24]);
+S=imresize(clip(S), [42 24]);
+T=imresize(clip(T), [42 24]);
+U=imresize(clip(U), [42 24]);
+V=imresize(clip(V), [42 24]);
+W=imresize(clip(W), [42 24]);
+X=imresize(clip(X), [42 24]);
+Y=imresize(clip(Y), [42 24]);
+Z=imresize(clip(Z), [42 24]);
+
 %*-*-*-*-*-*-*-*-*-*-*-
 letter=[A B C D E F G H I J K L M...
     N O P Q R S T U V W X Y Z];
@@ -48,3 +75,8 @@ templates=mat2cell(character,42,[24 24 24 24 24 24 24 ...
     24 24 24 24 24]);
 save ('templates','templates')
 clear all
+
+function img_out=clip(img_in)
+[f c]=find(img_in);
+img_out=img_in(:,min(c):max(c));%Crops image
+end

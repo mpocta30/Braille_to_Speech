@@ -12,8 +12,8 @@ im_braille=clip(im_braille);
 pixel_character_num=size(im_braille,2);
 for s=1:pixel_character_num
     if sum(im_braille(:,s))==0 && space_counter >= 10
-        nm=im_braille(:, 1:s-1); % First line matrix
-        rm=im_braille(:, s:end);% Remain line matrix
+        nm=im_braille(:, 1:s-1); % First letter matrix
+        rm=im_braille(:, s:end);% Remain letter matrix
         fc = clip(nm);
         re=clip(rm);
         %*-*-*Uncomment lines below to see the result*-*-*-*-
@@ -23,11 +23,13 @@ for s=1:pixel_character_num
     elseif sum(im_braille(:,s))==0
         space_counter = space_counter + 1;
     else
-        fc=im_braille;%Only one line.
+        fc=im_braille;%Only one letter.
         re=[ ];
     end
 end
 
 function img_out=clip(img_in)
 [f c]=find(img_in);
+disp(min(c));
 img_out=img_in(:,min(c):max(c));%Crops image
+imshow(img_out);pause(1);
