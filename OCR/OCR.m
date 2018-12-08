@@ -77,5 +77,7 @@ end
 fclose(fid);
 %Open 'text.txt' file
 winopen('text.txt')
+sysCommand = 'python bridge.py';
+[status, res] = system(sysCommand); 
 fprintf('For more information, visit: <a href= "http://www.matpic.com">www.matpic.com </a> \n')
 clear all
