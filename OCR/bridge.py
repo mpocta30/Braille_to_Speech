@@ -1,7 +1,6 @@
 import BridgeKeys
 import os
 import sys
-import winsound
 
 from subprocess import call
 from watson_developer_cloud import TextToSpeechV1
@@ -22,7 +21,14 @@ with open('text.txt', 'r') as text_file:
 
 # Play wav file
 # linux solution
-# call(["aplay", "answer.wav"])
+if sys.platform == 'linux' or sys.platform == 'linux2:':
+    call(["aplay", "answer.wav"])
+    # os.remove('answer.wav')
 # windows solution
-winsound.PlaySound('answer.wav', winsound.SND_ASYNC)
-#os.remove('answer.wav')
+elif sys.platform == 'win32':
+    import winsound
+    winsound.PlaySound('answer.wav', winsound.SND_ASYNC)
+    # os.remove('answer.wav')
+else:
+    print('Operating system may not be supported. Please play the answer.wav file manually')
+    # do not remove file here
