@@ -24,5 +24,5 @@ with open('text.txt', 'r') as text_file:
 # linux solution
 # call(["aplay", "answer.wav"])
 # windows solution
-winsound.PlaySound('answer.wav', winsound.SND_FILENAME | winsound.SND_ASYNC)
+winsound.PlaySound('answer.wav', winsound.SND_ASYNC)
 #os.remove('answer.wav')
