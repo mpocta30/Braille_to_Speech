@@ -26,8 +26,9 @@ if sys.platform == 'linux' or sys.platform == 'linux2:':
     # os.remove('answer.wav')
 # windows solution
 elif sys.platform == 'win32':
-    import winsound
-    winsound.PlaySound('answer.wav', winsound.SND_ASYNC)
+    #import winsound
+    #winsound.PlaySound('answer.wav', winsound.SND_ASYNC)
+    os.system('start answer.wav')
     # os.remove('answer.wav')
 else:
     print('Operating system may not be supported. Please play the answer.wav file manually')
