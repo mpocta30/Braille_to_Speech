@@ -23,8 +23,12 @@ with open('text.txt', 'r') as text_file:
 # linux solution
 if sys.platform == 'linux' or sys.platform == 'linux2:':
     call(["aplay", "answer.wav"])
+    # os.remove('answer.wav')
 # windows solution
 elif sys.platform == 'win32':
     import winsound
     winsound.PlaySound('answer.wav', winsound.SND_ASYNC)
-#os.remove('answer.wav')
+    # os.remove('answer.wav')
+else:
+    print('Operating system may not be supported. Please play the answer.wav file manually')
+    # do not remove file here
