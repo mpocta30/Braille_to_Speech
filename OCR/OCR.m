@@ -6,9 +6,17 @@
 % PRINCIPAL PROGRAM
 warning off %#ok<WNOFF>
 % Clear all
-clc, close all, clear all
+clear; clc; close all; 
+
+% OPTIONS: 
+% setting show_images to 1 will display the found braille letters as images
+show_images = 1; 
+% setting test_mode to 1 will not make the text-to-speech API call, it will
+% only write the result to the text.txt file 
+test_mode = 0; 
+
 % Read image
-imagen=imread('faith.jpg');
+imagen=imread('b2.png');
 %imagen=imrotate(imagen, -90);
 % Show image
 %imshow(imagen);
@@ -19,14 +27,18 @@ if size(imagen,3)==3 %RGB image
     % Convert to BW
     threshold = graythresh(imagen);
     imagen = imbinarize(imagen,threshold);
-    imshow(imagen);
+    if show_images == 1
+        imshow(imagen);
+    end 
 end
 % Remove all object containing fewer than 30 pixels
 %imshow(imagen);pause(0.5);
 title('BINARIZED INPUT IMAGE')
 imagen = imcomplement(imagen);
 imagen = bwareaopen(imagen,20);
-imshow(imagen);pause(1);
+if show_images == 1
+    imshow(imagen);pause(1);
+end
 %Storage matrix word from image
 word=[ ];
 re_line=imagen;
@@ -43,7 +55,9 @@ while 1
     imgn=fl;
     re_letter=imgn;
     %Uncomment line below to see lines one by one
-    imshow(fl);pause(0.5)  
+    if show_images == 1
+        imshow(fl);pause(0.5)  
+    end 
     %-----------------------------------------------------------------     
     % Label and count connected components
     while 1
@@ -55,7 +69,9 @@ while 1
         % Resize letter (same size of template)
         img_r=imresize(fc,[42 24]);
         %Uncomment line below to see letters one by one
-        imshow(img_r);pause(0.5)
+        if show_images == 1
+            imshow(img_r);pause(0.5)
+        end
         %-------------------------------------------------------------------
         % Call fcn to convert image to text
         letter=read_letter(img_r,num_letras);
@@ -77,7 +93,14 @@ end
 fclose(fid);
 %Open 'text.txt' file
 winopen('text.txt')
-sysCommand = 'python bridge.py';
-[status, res] = system(sysCommand); 
+if ispc
+    sysCommand = 'python bridge.py';
+elseif isunix
+    sysCommand = 'python3 brdige.py';
+else 
+    fprintf('Operating system may not be supported, play answer.wav manually'); 
+end 
+if test_mode ~= 1 
+    [status, res] = system(sysCommand); 
+end 
 fprintf('For more information, visit: <a href= "http://www.matpic.com">www.matpic.com </a> \n')
-clear all
